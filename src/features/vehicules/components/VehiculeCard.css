@@ -1,0 +1,29 @@
+
+
+.imma{
+    border : solid;
+    padding-bottom: 0.3em;
+    padding-top: 0.3em;
+    padding-left: 0.5em;
+    padding-right: 0.5em;
+    border-radius: 0.5em;
+
+    margin-left: 0.5em;
+
+    font-weight: bold;
+
+    background-color: #E7E7E7;
+}
+
+.ligneDescri{
+    padding-top: 1em;
+}
+
+.inputVehicule{
+    margin-top: 1em;
+}
+
+.btnValider{
+    margin-top: 1em;
+}
+

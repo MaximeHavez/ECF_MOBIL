@@ -10,8 +10,8 @@ import {
   setupIonicReact
 } from '@ionic/react';
 import { IonReactRouter } from '@ionic/react-router';
-import { ellipse, square, triangle } from 'ionicons/icons';
-import Tab1 from './pages/Tab1';
+import {carSportSharp, ellipse, square, triangle} from 'ionicons/icons';
+import Vehicules from './features/vehicules/pages/Vehicules';
 import Tab2 from './pages/Tab2';
 import Tab3 from './pages/Tab3';
 
@@ -33,6 +33,7 @@ import '@ionic/react/css/display.css';
 
 /* Theme variables */
 import './theme/variables.css';
+import VehiculeCard from "./features/vehicules/components/VehiculeCard";
 
 setupIonicReact();
 
@@ -41,8 +42,8 @@ const App: React.FC = () => (
     <IonReactRouter>
       <IonTabs>
         <IonRouterOutlet>
-          <Route exact path="/tab1">
-            <Tab1 />
+          <Route exact path="/vehicules">
+            <Vehicules />
           </Route>
           <Route exact path="/tab2">
             <Tab2 />
@@ -51,13 +52,14 @@ const App: React.FC = () => (
             <Tab3 />
           </Route>
           <Route exact path="/">
-            <Redirect to="/tab1" />
+            <Redirect to="/vehicules" />
           </Route>
+          <Route path="/vehicules/:id" component={VehiculeCard}/>
         </IonRouterOutlet>
         <IonTabBar slot="bottom">
-          <IonTabButton tab="tab1" href="/tab1">
-            <IonIcon icon={triangle} />
-            <IonLabel>Tab 1</IonLabel>
+          <IonTabButton tab="vehicules" href="/vehicules">
+            <IonIcon icon={carSportSharp} />
+            <IonLabel>Vehicules</IonLabel>
           </IonTabButton>
           <IonTabButton tab="tab2" href="/tab2">
             <IonIcon icon={ellipse} />
