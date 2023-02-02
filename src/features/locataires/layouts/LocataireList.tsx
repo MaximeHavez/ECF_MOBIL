@@ -14,15 +14,20 @@ import Locataires from "../pages/Locataires";
 import {LocataireType} from "../models/LocataireType";
 import {callVehiculeService} from "../../vehicules/services/VehiculeService";
 import {callLocataireService} from "../services/LocataireServices";
-import {archive, heart, trash} from "ionicons/icons";
+import {archive, heart, imageSharp, trash} from "ionicons/icons";
+import {useParams} from "react-router";
 
 const LocataireList = () => {
+
+
 
     const [locataires, setLocataires] = useState<LocataireType[]>([])
 
     useEffect(() => {
         callLocataireService.findAll().then(res => setLocataires(res))
     }, [])
+
+
   return (
       <>
           <IonCard>
@@ -37,9 +42,9 @@ const LocataireList = () => {
 
                           <IonItemSliding key={index}>
                               <IonItemOptions side="start">
-                                  <IonItemOption color="success">
-                                      <IonIcon slot="end" icon={archive}></IonIcon>
-                                      Archive
+                                  <IonItemOption routerLink={`/locataires/${i.id}`} color="success">
+                                      <IonIcon slot="end" icon={imageSharp}></IonIcon>
+                                      Détails
                                   </IonItemOption>
                               </IonItemOptions>
 

@@ -34,6 +34,7 @@ import '@ionic/react/css/display.css';
 /* Theme variables */
 import './theme/variables.css';
 import VehiculeCard from "./features/vehicules/components/VehiculeCard";
+import LocataireCard from "./features/locataires/components/LocataireCard";
 
 setupIonicReact();
 
@@ -55,6 +56,7 @@ const App: React.FC = () => (
             <Redirect to="/vehicules" />
           </Route>
           <Route path="/vehicules/:id" component={VehiculeCard}/>
+          <Route path="/locataires/:id" component={LocataireCard}/>
         </IonRouterOutlet>
         <IonTabBar slot="bottom">
           <IonTabButton tab="vehicules" href="/vehicules">
