@@ -1,11 +1,12 @@
 import {
+    IonButton,
     IonCard,
     IonCardContent,
     IonCardHeader,
     IonCardSubtitle,
-    IonCardTitle, IonIcon, IonItem, IonItemOption, IonItemOptions, IonItemSliding,
+    IonCardTitle, IonContent, IonIcon, IonInput, IonItem, IonItemOption, IonItemOptions, IonItemSliding,
     IonLabel,
-    IonList,
+    IonList, IonModal,
     IonThumbnail
 } from "@ionic/react";
 import locataires from "../pages/Locataires";
@@ -22,11 +23,35 @@ const LocataireList = () => {
 
 
     const [locataires, setLocataires] = useState<LocataireType[]>([])
+    const [newLocataire, setNewLocataire] = useState<LocataireType>(new LocataireType("","","",""))
 
     useEffect(() => {
         callLocataireService.findAll().then(res => setLocataires(res))
     }, [])
 
+    const handleChangePrenom = (event : any) => {
+        setNewLocataire({...newLocataire, prenom:event.target.value})
+    }
+
+    const handleChangeNom = (event : any) => {
+        setNewLocataire({...newLocataire, nom:event.target.value})
+    }
+
+    const handleChangeEmail = (event : any) => {
+        setNewLocataire({...newLocataire, email:event.target.value})
+    }
+
+    const handleChangeMdp = (event : any) => {
+        setNewLocataire({...newLocataire, motDePasse:event.target.value})
+    }
+
+    const handleClickAdd = () => {
+        callLocataireService.addUser(newLocataire)
+    }
+
+    const handleClickDelete = (id : string) => {
+        callLocataireService.deleteUser(id)
+    }
 
   return (
       <>
@@ -36,6 +61,40 @@ const LocataireList = () => {
                   <IonCardSubtitle></IonCardSubtitle>
               </IonCardHeader>
               <IonCardContent>
+
+                  {/* Bouton d'ajout d'un véhicule relié à une modal par son id */}
+                  <IonButton id="open-modal2" color="secondary" expand="block" size="large">Ajouter un locataire</IonButton>
+                  {/* Modal contenant le formulaire d'ajout de véhicule */}
+                  <IonModal
+                      trigger="open-modal2"
+                      initialBreakpoint={0.90}
+                      breakpoints={[0, 0.25, 0.5, 0.75]}
+                      handleBehavior="cycle"
+                  >
+                      <IonContent className="ion-padding">
+                          <div className="ion-margin-top">
+                              <IonItem fill="outline">
+                                  <IonLabel position="floating">Nom du locataire</IonLabel>
+                                  <IonInput onIonChange={handleChangeNom} placeholder="Nom"></IonInput>
+                              </IonItem>
+                              <IonItem className="inputVehicule" fill="outline">
+                                  <IonLabel position="floating">Prénom du locataire</IonLabel>
+                                  <IonInput onIonChange={handleChangePrenom} placeholder="Prenom"></IonInput>
+                              </IonItem>
+                              <IonItem className="inputVehicule" fill="outline">
+                                  <IonLabel position="floating">Email du locataire</IonLabel>
+                                  <IonInput onIonChange={handleChangeEmail} placeholder="Email"></IonInput>
+                              </IonItem>
+                              <IonItem className="inputVehicule" fill="outline">
+                                  <IonLabel position="floating">Mot de passe</IonLabel>
+                                  <IonInput onIonChange={handleChangeMdp} placeholder="Mot de passe"></IonInput>
+                              </IonItem>
+
+                              <IonButton onClick={handleClickAdd} color="success" className="btnValider" expand="block" size="large">Valider</IonButton>
+                          </div>
+                      </IonContent>
+                  </IonModal>
+
                   <IonList>
 
                       {locataires.map((i, index) =>
@@ -56,11 +115,8 @@ const LocataireList = () => {
                           </IonItem>
 
                               <IonItemOptions>
-                                  <IonItemOption>
-                                      <IonIcon slot="end" icon={heart}></IonIcon>
-                                      Favorite
-                                  </IonItemOption>
-                                  <IonItemOption color="danger">
+
+                                  <IonItemOption onClick={() => handleClickDelete(i.id)} color="danger">
                                       <IonIcon slot="end" icon={trash}></IonIcon>
                                       Delete
                                   </IonItemOption>

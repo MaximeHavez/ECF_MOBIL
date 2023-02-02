@@ -10,9 +10,9 @@ import {
   setupIonicReact
 } from '@ionic/react';
 import { IonReactRouter } from '@ionic/react-router';
-import {carSportSharp, ellipse, peopleSharp, square, triangle} from 'ionicons/icons';
+import {carSportSharp, clipboardSharp, ellipse, peopleSharp, square, triangle} from 'ionicons/icons';
 import Vehicules from './features/vehicules/pages/Vehicules';
-import Tab2 from './pages/Tab2';
+import Locations from './features/locations/pages/Locations';
 import Locataires from './features/locataires/pages/Locataires';
 
 /* Core CSS required for Ionic components to work properly */
@@ -46,10 +46,10 @@ const App: React.FC = () => (
           <Route exact path="/vehicules">
             <Vehicules />
           </Route>
-          <Route exact path="/tab2">
-            <Tab2 />
+          <Route exact path="/locations">
+            <Locations />
           </Route>
-          <Route path="/tab3">
+          <Route path="/locataires">
             <Locataires />
           </Route>
           <Route exact path="/">
@@ -63,11 +63,11 @@ const App: React.FC = () => (
             <IonIcon icon={carSportSharp} />
             <IonLabel>Vehicules</IonLabel>
           </IonTabButton>
-          <IonTabButton tab="tab2" href="/tab2">
-            <IonIcon icon={ellipse} />
-            <IonLabel>Tab 2</IonLabel>
+          <IonTabButton tab="locations" href="/locations">
+            <IonIcon icon={clipboardSharp} />
+            <IonLabel>Locations</IonLabel>
           </IonTabButton>
-          <IonTabButton tab="tab3" href="/tab3">
+          <IonTabButton tab="tab3" href="/locataires">
             <IonIcon icon={peopleSharp} />
             <IonLabel>Locataires</IonLabel>
           </IonTabButton>
