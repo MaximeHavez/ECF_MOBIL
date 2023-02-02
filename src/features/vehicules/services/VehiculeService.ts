@@ -27,6 +27,23 @@ export class VehiculeService {
         return  fetch(`http://localhost:8080/vehicules/${id}`, { method: 'DELETE' })
     }
 
+    findVehiculeByStatus = async (status : string) => {
+        const response = await fetch(`http://localhost:8080/vehicules/status?status=${status}`);
+        const data = await response.json();
+        return data
+    }
+
+    updateVehicule = async (vehicule : VehiculeType, id:string) => {
+
+        const requestOptions = {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(vehicule)
+        }
+        fetch(`http://localhost:8080/vehicules/${id}`, requestOptions)
+            .then(response => response.json())
+    }
+
 
 }
 

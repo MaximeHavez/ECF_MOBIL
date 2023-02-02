@@ -7,23 +7,69 @@ import {
     IonCardTitle, IonContent, IonIcon, IonInput, IonItem, IonItemOption, IonItemOptions, IonItemSliding,
     IonLabel,
     IonList, IonModal,
-    IonThumbnail
+    IonThumbnail, IonToggle
 } from "@ionic/react";
 import {useEffect, useState} from "react";
 import {VehiculeType} from "../models/VehiculeType";
 import {callVehiculeService} from "../services/VehiculeService";
-import {archive, heart, imageSharp, pencil, trash} from "ionicons/icons";
-import {useParams} from "react-router";
+import {imageSharp, pencil, trash} from "ionicons/icons";
+import '../components/VehiculeCard.css'
 
 const VehiculeList = () => {
 
     const [vehiculeList, setVehiculeList] = useState<VehiculeType[]>([])
 
     const [newVehicule, setNewVehicule] = useState<VehiculeType>(new VehiculeType("","","","",0, "",""))
+    const [switchToggle, setSwitchToggle] = useState<boolean>(true)
+    const [status, setStatus] = useState<string>("")
 
+
+    /**
+     * Fonction qui permet de changer le state du status via le toggle
+     * @param event
+     */
+    const handleClickDispo = (event : any) => {
+
+        if (switchToggle == true) {
+            setStatus("Loué")
+        } else if (switchToggle == false) {
+            setStatus("Disponible")
+        }
+        setSwitchToggle(!switchToggle)
+    }
+
+
+    /**
+     * UseEffect de base
+     */
     useEffect(() => {
         callVehiculeService.findAll().then(res => setVehiculeList(res))
     }, [])
+
+    /**
+     * UseEffect qui utilise la fonction de recherche par status du back
+     */
+    useEffect(() => {
+        callVehiculeService.findVehiculeByStatus(status).then(res => setVehiculeList(res))
+    }, [switchToggle])
+
+    /**
+     * Fonction qui permet d'ajouter un vehicule
+     */
+    const handleClickAdd = () => {
+        callVehiculeService.addVehicule(newVehicule)
+    }
+
+    /**
+     * Fonction qui permet de supprimer un véhicule
+     * @param id
+     */
+    const handleClickDelete = (id : string) => {
+        callVehiculeService.deleteVehicule(id)
+    }
+
+
+
 
     /**
      * Fonction permettant de set la marque pour un nouveau véhicule
@@ -81,13 +127,9 @@ const VehiculeList = () => {
         setNewVehicule({...newVehicule, status:event.target.value})
     }
 
-    const handleClickAdd = () => {
-        callVehiculeService.addVehicule(newVehicule)
-    }
 
-    const handleClickDelete = (id : string) => {
-        callVehiculeService.deleteVehicule(id)
-    }
+
+
 
 
     return (
@@ -142,7 +184,11 @@ const VehiculeList = () => {
                             </div>
                         </IonContent>
                     </IonModal>
-
+                    <div className="toggle">
+                        <IonLabel>Loué</IonLabel>
+                        <IonToggle checked={switchToggle} onIonChange={handleClickDispo}></IonToggle>
+                        <IonLabel>Disponible</IonLabel>
+                    </div>
                     <IonList>
                         {vehiculeList.map((i, index) =>
 
@@ -168,10 +214,7 @@ const VehiculeList = () => {
 
                                 {/* 2ème partie du composant permettant de slider l'item de la liste  */}
                                 <IonItemOptions>
-                                    <IonItemOption color="warning">
-                                        <IonIcon slot="end" icon={pencil}></IonIcon>
-                                        Modifier
-                                    </IonItemOption>
+
                                     <IonItemOption onClick={() => handleClickDelete(i.id)} color="danger">
                                         <IonIcon slot="end" icon={trash}></IonIcon>
                                         Supprimer
