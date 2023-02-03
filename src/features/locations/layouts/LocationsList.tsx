@@ -33,11 +33,11 @@ const LocationsList = () => {
 
     useEffect(() => {
         callLocataireService.findAll().then(res => setLocataireList(res))
-    })
+    },[])
 
     useEffect(()=> {
         callVehiculeService.findAll().then(res => setVehiculeList(res))
-    })
+    },[])
 
     const handleChangeDateDebut = (event : any) => {
         setNewLocation({...newLocation, dateDebut:event.target.value})
@@ -54,7 +54,7 @@ const LocationsList = () => {
     }
 
     const handleChangeVehicule = (event : any) => {
-        callVehiculeService.findVehiculeById(event.target.value).then(res => setNewLocation({...newLocation, locataire:res}))
+        callVehiculeService.findVehiculeById(event.target.value).then(res => setNewLocation({...newLocation, vehicule:res}))
     }
 
     const handleClickAdd = () => {
