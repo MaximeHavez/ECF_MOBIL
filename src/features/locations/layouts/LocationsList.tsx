@@ -6,7 +6,7 @@ import {
     IonCardSubtitle,
     IonCardTitle, IonContent, IonInput,
     IonItem, IonLabel,
-    IonList, IonModal,
+    IonList, IonModal, IonSelect, IonSelectOption,
     IonThumbnail
 } from "@ionic/react";
 import {useEffect, useState} from "react";
@@ -14,6 +14,8 @@ import {LocationType} from "../models/LocationType";
 import {callLocationService} from "../services/LocationServices";
 import {LocataireType} from "../../locataires/models/LocataireType";
 import {VehiculeType} from "../../vehicules/models/VehiculeType";
+import {callLocataireService} from "../../locataires/services/LocataireServices";
+import {callVehiculeService} from "../../vehicules/services/VehiculeService";
 
 const LocationsList = () => {
 
@@ -22,21 +24,31 @@ const LocationsList = () => {
     const [newLocation, setNewLocation] = useState<LocationType>(new LocationType("", "", 0,
                                                                 new LocataireType("","", "", ""),
                                                                 new VehiculeType("", "", "", "",0,"","")))
+    const [locataireList, setLocataireList] = useState<LocataireType[]>([])
+    const [vehiculeList, setVehiculeList] = useState<VehiculeType[]>([])
 
     useEffect(() => {
         callLocationService.findAll().then(res => setLocationList(res))
     }, [])
 
-    const handleChangeDateDebut = () => {
+    useEffect(() => {
+        callLocataireService.findAll().then(res => setLocataireList(res))
+    })
 
+    useEffect(()=> {
+        callVehiculeService.findAll().then(res => setVehiculeList(res))
+    })
+
+    const handleChangeDateDebut = (event : any) => {
+        setNewLocation({...newLocation, dateDebut:event.target.value})
     }
 
-    const handleChangeDateFin = () => {
-
+    const handleChangeDateFin = (event : any) => {
+        setNewLocation({...newLocation, dateFin:event.target.value})
     }
 
     const handleChangeLocataire = () => {
-
+        // setNewLocation({...newLocation, locataire:event.target.value})
     }
 
     const handleChangeVehicule = () => {
@@ -56,7 +68,7 @@ const LocationsList = () => {
               </IonCardHeader>
               <IonCardContent>
 
-                  <IonButton id="open-modal3" color="secondary" expand="block" size="large">Ajouter un véhicule</IonButton>
+                  <IonButton id="open-modal3" color="secondary" expand="block" size="large">Créer une location</IonButton>
                   {/* Modal contenant le formulaire d'ajout de véhicule */}
                   <IonModal
                       trigger="open-modal3"
@@ -74,15 +86,28 @@ const LocationsList = () => {
                                   <IonLabel>Date de fin</IonLabel>
                                   <IonInput type="date" onIonChange={handleChangeDateFin}></IonInput>
                               </IonItem>
-                              <IonItem className="inputVehicule" fill="outline">
-                                  <IonLabel>Locataire</IonLabel>
-                                  <IonInput onIonChange={handleChangeLocataire}></IonInput>
-                              </IonItem>
-                              <IonItem className="inputVehicule" fill="outline">
-                                  <IonLabel>Véhicule</IonLabel>
-                                  <IonInput onIonChange={handleChangeVehicule}></IonInput>
-                              </IonItem>
+                              <IonList>
+                                  <IonItem>
+                                      <IonSelect placeholder="Selectionner un locataire" multiple={true}>
 
+                                          {locataireList.map((i , index) =>
+                                              <IonSelectOption key={index} value="apples">{i.nom} {i.prenom}</IonSelectOption>
+                                          )}
+
+                                      </IonSelect>
+                                  </IonItem>
+                                  <IonItem>
+                                      <IonSelect placeholder="Selectionner un locataire" multiple={true}>
+
+                                          {vehiculeList.map((i , index) =>
+                                              <IonSelectOption key={index} value="apples">{i.marque} {i.modele}</IonSelectOption>
+                                          )}
+
+                                      </IonSelect>
+                                  </IonItem>
+
+
+                          </IonList>
                               <IonButton onClick={handleClickAdd} color="success" className="btnValider" expand="block" size="large">Valider</IonButton>
                           </div>
                       </IonContent>
