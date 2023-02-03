@@ -47,16 +47,18 @@ const LocationsList = () => {
         setNewLocation({...newLocation, dateFin:event.target.value})
     }
 
-    const handleChangeLocataire = () => {
-        // setNewLocation({...newLocation, locataire:event.target.value})
+    const handleChangeLocataire = (event : any) => {
+
+        callLocataireService.findUserById(event.target.value).then(res => setNewLocation({...newLocation, locataire:res}))
+
     }
 
-    const handleChangeVehicule = () => {
-
+    const handleChangeVehicule = (event : any) => {
+        callVehiculeService.findVehiculeById(event.target.value).then(res => setNewLocation({...newLocation, locataire:res}))
     }
 
     const handleClickAdd = () => {
-
+        callLocationService.addLocation(newLocation)
     }
 
   return (
@@ -88,19 +90,19 @@ const LocationsList = () => {
                               </IonItem>
                               <IonList>
                                   <IonItem>
-                                      <IonSelect placeholder="Selectionner un locataire" multiple={true}>
+                                      <IonSelect onIonChange={handleChangeLocataire} placeholder="Selectionner un locataire" multiple={true}>
 
                                           {locataireList.map((i , index) =>
-                                              <IonSelectOption key={index} value="apples">{i.nom} {i.prenom}</IonSelectOption>
+                                              <IonSelectOption key={index} value={i.id}>{i.nom} {i.prenom}</IonSelectOption>
                                           )}
 
                                       </IonSelect>
                                   </IonItem>
                                   <IonItem>
-                                      <IonSelect placeholder="Selectionner un locataire" multiple={true}>
+                                      <IonSelect onIonChange={handleChangeVehicule} placeholder="Selectionner un vehicule" multiple={true}>
 
-                                          {vehiculeList.map((i , index) =>
-                                              <IonSelectOption key={index} value="apples">{i.marque} {i.modele}</IonSelectOption>
+                                          {vehiculeList.map((j , index) =>
+                                              <IonSelectOption key={index} value={j.id}>{j.marque} {j.modele}</IonSelectOption>
                                           )}
 
                                       </IonSelect>
